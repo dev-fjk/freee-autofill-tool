@@ -15,16 +15,13 @@
   "files.eol": "\n",
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "text": "コミットメッセージは必ず日本語だけで書いてください。英語を含めないでください。"
+      "text": "コミットメッセージは必ず日本語だけで書いてください"
     },
     {
       "text": "feat:, fix:, chore:, docs:, refactor:, test:, style:, ci: などの一般的な prefix を必ずつけてください。"
     },
     {
       "text": "コミットメッセージは複数行でもかまいませんが、1 行目は要約として 50 文字以内にしてください。2 行目は空行にして、3 行目以降に詳細説明を追加してください。"
-    },
-    {
-      "text": "複数行にする場合、すべての行も日本語にしてください。"
     }
   ]
 }
