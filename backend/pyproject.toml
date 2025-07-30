@@ -1,0 +1,27 @@
+# uvicorn app.main:app --reloadで実行
+[project]
+name = "backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi==0.116.1 ",
+  "uvicorn==0.35.0",
+  "pydantic==2.11.7",
+  "pydantic-core==2.33.2",
+  "pandas==2.3.1",
+  "openpyxl==2.3.1",
+  "pyyaml==6.0.2",
+  "ruff==0.12.7"
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+fix = true
+
+[tool.ruff.format]
+preview = true
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]
+ignore = []

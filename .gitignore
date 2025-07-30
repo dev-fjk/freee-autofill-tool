@@ -1,0 +1,35 @@
+# ---- Python (FastAPI) ----
+venv/
+.venv/
+
+__pycache__/
+*.py[cod]
+*.pyo
+
+*.log
+
+# ---- Node.js (React) ----
+# Node modules
+frontend/node_modules/
+
+# React ビルド成果物
+frontend/build/
+frontend/dist/
+
+# 環境変数ファイル
+frontend/.env
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- OS 固有 ----
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ---- Others ----
+# Python virtualenv metadata
+*.egg-info/
