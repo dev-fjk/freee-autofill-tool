@@ -1,0 +1,27 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/Scripts/python.exe",
+  "ruff.enable": true,
+  "ruff.path": ["${workspaceFolder}/backend/.venv/Scripts/ruff.exe"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.rulers": [120],
+  "ruff.lineLength": 120,
+  "files.insertFinalNewline": true,
+  "terminal.integrated.scrollback": 10000,
+  "git.autofetch": true,
+  "editor.formatOnSave": true,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "コミットメッセージは必ず日本語で書いてください。"
+    },
+    {
+      "text": "Conventional Commits に従い、feat:, fix:, chore:, docs:, refactor:, test:, style:, ci: などの一般的な prefix を必ずつけてください。"
+    },
+    {
+      "text": "コミットメッセージは複数行でもかまいませんが、1 行目は要約として 50 文字以内にしてください。2 行目は空行にして、3 行目以降に詳細説明を追加してください。"
+    }
+  ]
+}
