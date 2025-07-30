@@ -1,2 +1,2 @@
-# freee-autofill-app
+# freee-autofill-tool
 Freeeの勤怠自動入力ツール
