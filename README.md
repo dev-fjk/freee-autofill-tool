@@ -28,3 +28,7 @@ $ uvicorn app.main:app --reload
 Fast API 起動後に以下 URL から Swagger にアクセスして動作確認ができます。
 
 http://127.0.0.1:8000/docs
+
+## 開発ツール
+VSCodeを利用しています。<br>
+git hub copilotのコミットメッセージの自動生成設定も入れているので、copilotをvscodeで入れると楽です。
