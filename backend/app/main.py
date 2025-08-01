@@ -1,11 +1,16 @@
 import logging
 import uuid
+from typing import List
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
 from app.config.logging import request_id_ctx_var, request_info_ctx_var, setup_logging
+from app.db.deps import get_db
+from app.models.project_entity import Project
+from app.schemas.project import ProjectSchema
 
 setup_logging()
 log = logging.getLogger(__name__)
@@ -54,3 +59,9 @@ class Item(BaseModel):
 @app.post("/items/")
 def create_item(item: Item):
     return item
+
+# ここからprojects全件取得API
+@app.get("/projects", response_model=List[ProjectSchema])
+def get_projects(db: Session = Depends(get_db)):
+    projects = db.query(Project).all()
+    return projects

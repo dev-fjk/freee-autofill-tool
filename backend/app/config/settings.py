@@ -1,6 +1,6 @@
 import os
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 # デフォルトは環境変数から読み込み db_host -> DB_HOSTという環境変数の値がバインドされる
