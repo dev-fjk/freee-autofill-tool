@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from app.config.logging_config import request_id_ctx_var, request_info_ctx_var, setup_logging
+from app.config.logging import request_id_ctx_var, request_info_ctx_var, setup_logging
 
 setup_logging()
 log = logging.getLogger(__name__)

@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: free_autofill_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: free_autofill_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: always
+
+volumes:
+  pgdata:

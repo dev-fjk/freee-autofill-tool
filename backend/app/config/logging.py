@@ -47,7 +47,7 @@ LOGGING_CONFIG = {
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "formatter": "simple",  # ここを変更
+            "formatter": "simple",
         },
         "file": {
             "class": "logging.handlers.TimedRotatingFileHandler",
