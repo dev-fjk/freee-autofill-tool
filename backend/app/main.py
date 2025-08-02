@@ -1,16 +1,11 @@
 import logging
 import uuid
-from typing import List
 
-from fastapi import Depends, FastAPI, Request
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
 
+from app.api.projects import router as projects_router
 from app.config.logging import request_id_ctx_var, request_info_ctx_var, setup_logging
-from app.db.deps import get_db
-from app.models.project import Project
-from app.schemas.project import ProjectRead
 
 setup_logging()
 log = logging.getLogger(__name__)
@@ -23,7 +18,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.middleware("http")
 async def add_request_id_middleware(request: Request, call_next):
@@ -43,25 +37,4 @@ async def add_request_id_middleware(request: Request, call_next):
     response.headers["X-Request-ID"] = request_id
     return response
 
-@app.get("/")
-def read_root():
-    log.info("Root endpoint accessed")
-    return {"message": "Hello from /"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int):
-    return {"item_id": item_id}
-
-class Item(BaseModel):
-    name: str
-    price: float
-
-@app.post("/items/")
-def create_item(item: Item):
-    return item
-
-# ここからprojects全件取得API
-@app.get("/projects", response_model=List[ProjectRead])
-def get_projects(db: Session = Depends(get_db)):
-    projects = db.query(Project).all()
-    return projects
+app.include_router(projects_router)
