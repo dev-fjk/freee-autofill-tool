@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 
 from app.config.logging import request_id_ctx_var, request_info_ctx_var, setup_logging
 from app.db.deps import get_db
-from app.models.project_entity import Project
-from app.schemas.project import ProjectSchema
+from app.models.project import Project
+from app.schemas.project import ProjectRead
 
 setup_logging()
 log = logging.getLogger(__name__)
@@ -61,7 +61,7 @@ def create_item(item: Item):
     return item
 
 # ここからprojects全件取得API
-@app.get("/projects", response_model=List[ProjectSchema])
+@app.get("/projects", response_model=List[ProjectRead])
 def get_projects(db: Session = Depends(get_db)):
     projects = db.query(Project).all()
     return projects
