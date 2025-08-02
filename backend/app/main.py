@@ -9,7 +9,7 @@ from app.config.context import employee_id_ctx_var, request_id_ctx_var, request_
 from app.config.logging import setup_logging
 
 
-def employee_id_header(x_employee_id: str = Header(...)):  # これで必須化・Swaggerに表示
+def employee_id_header(x_employee_id: str = Header(...)):
     return x_employee_id
 
 app = FastAPI(dependencies=[Depends(employee_id_header)])
@@ -44,7 +44,6 @@ async def add_request_id_middleware(request: Request, call_next):
     return response
 
 
-# middlewareで必ずセット
 @app.middleware("http")
 async def add_employee_id_middleware(request: Request, call_next):
     employee_id = request.headers.get("X-Employee-Id")
