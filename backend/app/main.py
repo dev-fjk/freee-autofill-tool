@@ -9,7 +9,7 @@ from app.config.context import employee_id_ctx_var, request_id_ctx_var, request_
 from app.config.logging import setup_logging
 
 
-def employee_id_header(x_employee_id: str = Header(...)):
+def employee_id_header(x_employee_id: str = Header(default=None)):
     return x_employee_id
 
 app = FastAPI(dependencies=[Depends(employee_id_header)])

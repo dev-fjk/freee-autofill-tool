@@ -17,5 +17,7 @@ class ProjectRead(BaseModel):
     updated_at: datetime
     updated_by: str
 
-    class Config:
-        orm_mode = True
+
+    model_config = {
+        "from_attributes": True  # ここをTrueにするのがポイント
+    }        
