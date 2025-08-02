@@ -1,15 +1,21 @@
 import logging
 import uuid
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.projects import router as projects_router
-from app.config.logging import request_id_ctx_var, request_info_ctx_var, setup_logging
+from app.config.context import employee_id_ctx_var, request_id_ctx_var, request_info_ctx_var
+from app.config.logging import setup_logging
+
+
+def employee_id_header(x_employee_id: str = Header(...)):  # これで必須化・Swaggerに表示
+    return x_employee_id
+
+app = FastAPI(dependencies=[Depends(employee_id_header)])
 
 setup_logging()
 log = logging.getLogger(__name__)
-app = FastAPI()
 
 # CORS
 app.add_middleware(
@@ -36,5 +42,15 @@ async def add_request_id_middleware(request: Request, call_next):
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
     return response
+
+
+# middlewareで必ずセット
+@app.middleware("http")
+async def add_employee_id_middleware(request: Request, call_next):
+    employee_id = request.headers.get("X-Employee-Id")
+    employee_id_ctx_var.set(employee_id)
+    response = await call_next(request)
+    return response
+
 
 app.include_router(projects_router)
