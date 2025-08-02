@@ -74,7 +74,7 @@ requires-dist = [
     { name = "fastapi", specifier = "==0.116.1" },
     { name = "openpyxl", specifier = ">=2.3.1" },
     { name = "pandas", specifier = ">=2.3.1" },
-    { name = "psycopg2" },
+    { name = "psycopg2", specifier = ">=2.9.10" },
     { name = "pydantic", specifier = ">=2.11.7" },
     { name = "pydantic-core", specifier = ">=2.33.2" },
     { name = "pydantic-settings", specifier = ">=2.10.1" },

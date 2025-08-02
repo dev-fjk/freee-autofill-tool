@@ -3,7 +3,6 @@ import os
 from pydantic_settings import BaseSettings
 
 
-# デフォルトは環境変数から読み込み db_host -> DB_HOSTという環境変数の値がバインドされる
 class Settings(BaseSettings):
     db_host: str
     db_port: int
@@ -11,18 +10,15 @@ class Settings(BaseSettings):
     db_user: str
     db_password: str
 
-
 def get_settings() -> Settings:
     if os.getenv("RENDER") == "true":
-        return Settings()
+        # Render環境：.envは使わず直接環境変数
+        class Config:
+            env_file = None
+        return Settings(_env_file=None)
     else:
-        return Settings(
-            db_host="localhost",
-            db_port=5435,
-            db_name="free_autofill_db",
-            db_user="user",
-            db_password="password",
-        )
-
+        # ローカル：.envを読み込む
+        env_path = os.path.join(os.path.dirname(__file__), "../../.env")
+        return Settings(_env_file=env_path)
 
 settings = get_settings()

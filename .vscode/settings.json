@@ -3,6 +3,7 @@
   "python.analysis.extraPaths": ["./backend"],
   "ruff.enable": true,
   "ruff.path": ["${workspaceFolder}/backend/.venv/Scripts/ruff.exe"],
+  "ruff.lint.ignore": ["B008"],
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
@@ -16,7 +17,7 @@
   "files.eol": "\n",
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "text": "コミットメッセージは必ず日本語だけで書いてください"
+      "text": "必ず日本語で書いてください。"
     },
     {
       "text": "feat:, fix:, chore:, docs:, refactor:, test:, style:, ci: などの一般的な prefix を必ずつけてください。"
