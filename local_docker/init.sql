@@ -58,9 +58,9 @@ CREATE TABLE project_excel_formats (
     start_date_col VARCHAR(10) NOT NULL,
     end_date_col VARCHAR(10) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by VARCHAR(100) NOT NULL,
+    created_by VARCHAR(20) NOT NULL,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by VARCHAR(100) NOT NULL
+    updated_by VARCHAR(20) NOT NULL
 );
 
 -- カラムコメントはこうする

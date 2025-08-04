@@ -2,12 +2,47 @@ from __future__ import annotations
 
 from typing import Optional
 
+from fastapi import HTTPException
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
-from app.models import Project
-from app.schemas import PaginatedResponse, Pagination, ProjectRead
+from app.converter import convert_excel_format_to_read_model
+from app.models import Project, ProjectExcelFormat
+from app.schemas import PaginatedResponse, Pagination, ProjectDetailRead, ProjectRead
 
+
+def get_project_detail_by_id(
+    db: Session,
+    project_id: int
+) -> ProjectDetailRead:
+    # Projectを取得
+    project = db.query(Project).filter(Project.project_id == project_id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    # ExcelFormatを取得
+    excel_format = db.query(ProjectExcelFormat).filter(
+        ProjectExcelFormat.project_id == project_id
+    ).first()
+
+    excel_format_read = convert_excel_format_to_read_model(excel_format) if excel_format else None    
+
+    # Pydanticに詰める
+    return ProjectDetailRead(
+        project_id=project.project_id,
+        project_name=project.project_name,
+        project_description=project.project_description,
+        start_time=project.start_time,
+        end_time=project.end_time,
+        start_break_time=project.start_break_time,
+        end_break_time=project.end_break_time,
+        update_key=project.update_key,
+        created_at=project.created_at,
+        created_by=project.created_by,
+        updated_at=project.updated_at,
+        updated_by=project.updated_by,
+        excel_format=excel_format_read,
+    )
 
 def get_projects_with_pagination(
     db: Session,
