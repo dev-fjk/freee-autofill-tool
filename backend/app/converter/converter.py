@@ -11,6 +11,7 @@ def convert_excel_format_to_read_model(entity: ProjectExcelFormat) -> ProjectExc
         date_format=entity.date_format,
         start_date_col=entity.start_date_col,
         end_date_col=entity.end_date_col,
+        is_tested=entity.is_tested,
         created_at=entity.created_at,
         created_by=entity.created_by,
         updated_at=entity.updated_at,

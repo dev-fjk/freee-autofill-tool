@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Optional
 
 from fastapi import HTTPException
@@ -8,13 +9,23 @@ from sqlalchemy.orm import Session
 
 from app.converter import convert_excel_format_to_read_model
 from app.models import Project, ProjectExcelFormat
-from app.schemas import PaginatedResponse, Pagination, ProjectDetailRead, ProjectRead
+from app.schemas import PaginatedResponse, Pagination, ProjectCreate, ProjectDetailRead, ProjectRead
 
 
 def get_project_detail_by_id(
     db: Session,
     project_id: int
 ) -> ProjectDetailRead:
+    """ ID指定でprohect詳細情報を取得
+    Args:
+        db (Session): DB Session
+        project_id (int): Project ID
+    Raises:
+        HTTPException: Projectが見つからない場合: 404
+    Returns:
+        ProjectDetailRead: Projectの詳細情報
+    """
+
     # Projectを取得
     project = db.query(Project).filter(Project.project_id == project_id).first()
     if not project:
@@ -91,3 +102,37 @@ def get_projects_with_pagination(
         ),
         items=items_read,
     )
+
+def create_project(db: Session, project_in: ProjectCreate) -> Project:
+    """
+    新規プロジェクトを作成しDBに保存する。
+
+    Args:
+        db (Session): SQLAlchemyのDBセッション
+        project_in (ProjectCreate): プロジェクト作成用のPydanticモデル
+
+    Returns:
+        Project: 作成されたProjectのORMモデルインスタンス
+    """
+        
+    # 文字列からtime型に変換
+    start_time = datetime.strptime(project_in.start_time, '%H:%M').time()
+    end_time = datetime.strptime(project_in.end_time, '%H:%M').time()
+    start_break_time = datetime.strptime(project_in.start_break_time, '%H:%M').time()
+    end_break_time = datetime.strptime(project_in.end_break_time, '%H:%M').time()
+
+    project = Project(
+        project_name=project_in.project_name,
+        project_description=project_in.project_description,
+        start_time=start_time,
+        end_time=end_time,
+        start_break_time=start_break_time,
+        end_break_time=end_break_time,
+        update_key=project_in.update_key,
+        created_by=project_in.created_by,
+        updated_by=project_in.updated_by,
+    )
+    db.add(project)
+    db.commit()
+    db.refresh(project)
+    return project

@@ -1,4 +1,4 @@
-from sqlalchemy import CheckConstraint, Column, DateTime, Integer, SmallInteger, String, Text, Time
+from sqlalchemy import Boolean, CheckConstraint, Column, DateTime, Integer, SmallInteger, String, Text, Time
 from sqlalchemy.ext.declarative import declarative_base
 
 from app.config.clock import now_jst
@@ -31,6 +31,7 @@ class ProjectExcelFormat(Base):
     date_format = Column(String(20), nullable=True)
     start_date_col = Column(String(10), nullable=False)
     end_date_col = Column(String(10), nullable=False)
+    is_tested = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, nullable=False, default=now_jst)
     created_by = Column(String(100), nullable=False)
     updated_at = Column(DateTime, nullable=False, default=now_jst, onupdate=now_jst)
