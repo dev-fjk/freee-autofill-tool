@@ -82,3 +82,34 @@ class ProjectCreate(BaseModel):
             raise ValueError('end_break_time must be after start_break_time')
 
         return values
+    
+class ProjectUpdate(BaseModel):
+    """プロジェクト更新（PUT）用スキーマ。全項目必須で更新します。"""
+
+    project_name: ProjectName = Field(
+        ..., description="プロジェクト名", example="Updated Project"
+    )
+    project_description: Optional[str] = Field(
+        None, description="プロジェクト説明", example="更新された説明"
+    )
+    start_time: str = Field(..., description="開始時間 (HH:mm)", example="09:00")
+    end_time: str = Field(..., description="終了時間 (HH:mm)", example="18:00")
+    start_break_time: str = Field(..., description="休憩開始時間 (HH:mm)", example="12:00")
+    end_break_time: str = Field(..., description="休憩終了時間 (HH:mm)", example="13:00")
+    update_key: UpdateKey = Field(..., description="更新キー（0〜9999）", example=1234)
+    updated_by: UserName = Field(..., description="更新者", example="e024")
+
+    @model_validator(mode='before')
+    def check_time_order(cls, values):
+        start = values.get('start_time')
+        end = values.get('end_time')
+        start_break = values.get('start_break_time')
+        end_break = values.get('end_break_time')
+
+        if start is not None and end is not None and end <= start:
+            raise ValueError('end_time must be after start_time')
+
+        if start_break is not None and end_break is not None and end_break <= start_break:
+            raise ValueError('end_break_time must be after start_break_time')
+
+        return values    

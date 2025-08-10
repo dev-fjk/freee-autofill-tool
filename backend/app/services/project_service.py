@@ -3,13 +3,14 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
+from app.config.clock import now_jst
 from app.converter import convert_excel_format_to_read_model
 from app.models import Project, ProjectExcelFormat
-from app.schemas import PaginatedResponse, Pagination, ProjectCreate, ProjectDetailRead, ProjectRead
+from app.schemas import PaginatedResponse, Pagination, ProjectCreate, ProjectDetailRead, ProjectRead, ProjectUpdate
 
 
 def get_project_detail_by_id(
@@ -136,3 +137,72 @@ def create_project(db: Session, project_in: ProjectCreate) -> Project:
     db.commit()
     db.refresh(project)
     return project
+
+def update_project(db: Session, project_id: int, project_update: ProjectUpdate) -> ProjectRead:
+    """
+    プロジェクト情報を更新する。
+
+    Args:
+        db (Session): DBセッション
+        project_id (int): 更新対象のプロジェクトID
+        project_update (ProjectUpdate): 更新データ（update_keyは更新不可）
+
+    Returns:
+        ProjectRead: 更新後のプロジェクト情報
+
+    Raises:
+        HTTPException: update_keyが不一致の場合（409 Conflict）
+        HTTPException: プロジェクトが存在しない場合（404 Not Found）
+    """
+    project = db.query(Project).filter(Project.project_id == project_id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    # update_keyの整合性チェック
+    if project.update_key != project_update.update_key:
+        raise HTTPException(status_code=409, detail="update_key mismatch")
+
+    # 更新処理
+    project.project_name = project_update.project_name
+    project.project_description = project_update.project_description
+    project.start_time = datetime.strptime(project_update.start_time, "%H:%M").time()
+    project.end_time = datetime.strptime(project_update.end_time, "%H:%M").time()
+    project.start_break_time = datetime.strptime(project_update.start_break_time, "%H:%M").time()
+    project.end_break_time = datetime.strptime(project_update.end_break_time, "%H:%M").time()
+    # update_keyは変更しない
+
+    project.updated_at = now_jst()
+    project.updated_by = project_update.updated_by
+
+    db.add(project)
+    db.commit()
+    db.refresh(project)
+
+    # 返却用にPydanticモデルに変換
+    return ProjectRead.model_validate(project)
+
+def delete_project_by_id(db: Session, project_id: int, update_key: int) -> None:
+    """
+    指定されたproject_idのプロジェクトをupdate_keyの一致確認後に削除する。
+
+    Args:
+        db (Session): DBセッション
+        project_id (int): 削除対象プロジェクトID
+        update_key (int): クライアントが送信した更新キー
+
+    Raises:
+        HTTPException: プロジェクトが存在しない場合404
+        HTTPException: update_keyが一致しない場合409
+
+    Returns:
+        None: 削除成功時は特に返さない（204 No Content相当）
+    """
+    project = db.query(Project).filter(Project.project_id == project_id).first()
+    if project is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="プロジェクトが見つかりません。")
+
+    if project.update_key != update_key:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="更新キーが一致しません。")
+
+    db.delete(project)
+    db.commit()

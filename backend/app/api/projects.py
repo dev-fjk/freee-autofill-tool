@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import APIRouter, Body, Depends, Path, Query, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
 from sqlalchemy.orm import Session
 
 from app.db.deps import get_db
@@ -9,11 +9,14 @@ from app.schemas import (
     ProjectCreate,
     ProjectDetailRead,
     ProjectRead,
+    ProjectUpdate,
 )
 from app.services.project_service import (
     create_project,
+    delete_project_by_id,
     get_project_detail_by_id,
     get_projects_with_pagination,
+    update_project,
 )
 
 router = APIRouter(tags=["ProjectAPI"])
@@ -58,3 +61,36 @@ def create_new_project(
 ):
     project = create_project(db, project_in)
     return project
+
+@router.put(
+    "/projects/{project_id}",
+    response_model=ProjectRead,
+    summary="プロジェクト更新",
+    description="指定IDのプロジェクトを更新する",
+)
+def update_existing_project(
+    project_id: int = Path(..., description="プロジェクトID"),
+    project_in: ProjectUpdate = Body(...),
+    db: Session = Depends(get_db),
+):
+    try:
+        updated_project = update_project(db, project_id, project_in)
+        return updated_project
+    except HTTPException as e:
+        raise e
+
+@router.delete(
+    "/projects/{project_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="プロジェクト削除",
+    description="指定IDのプロジェクトを削除します。update_keyが一致しない場合はエラーになります。",
+)
+def delete_project(
+    project_id: int = Path(..., description="プロジェクトID"),
+    update_key: int = Query(..., description="更新キー（0〜9999）"),
+    db: Session = Depends(get_db),
+):
+    try:
+        delete_project_by_id(db, project_id, update_key)
+    except HTTPException as e:
+        raise e
