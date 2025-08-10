@@ -1,12 +1,20 @@
-
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Path, Query
+from fastapi import APIRouter, Body, Depends, Path, Query, status
 from sqlalchemy.orm import Session
 
 from app.db.deps import get_db
-from app.schemas import PaginatedResponse, ProjectDetailRead, ProjectRead
-from app.services.project_service import get_project_detail_by_id, get_projects_with_pagination
+from app.schemas import (
+    PaginatedResponse,
+    ProjectCreate,
+    ProjectDetailRead,
+    ProjectRead,
+)
+from app.services.project_service import (
+    create_project,
+    get_project_detail_by_id,
+    get_projects_with_pagination,
+)
 
 router = APIRouter(tags=["ProjectAPI"])
 
@@ -36,3 +44,17 @@ def get_projects(
     db: Session = Depends(get_db),
 ):
     return get_projects_with_pagination(db, project_id, project_name, page_number, page_size)
+
+@router.post(
+    "/projects",
+    response_model=ProjectRead,
+    status_code=status.HTTP_201_CREATED,
+    summary="プロジェクト作成",
+    description="新しいプロジェクトを登録する",
+)
+def create_new_project(
+    project_in: ProjectCreate = Body(...),
+    db: Session = Depends(get_db),
+):
+    project = create_project(db, project_in)
+    return project

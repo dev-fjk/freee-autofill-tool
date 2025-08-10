@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Optional
+
 from pydantic import BaseModel
+
 
 class ProjectExcelFormatRead(BaseModel):
     """Excelフォーマット情報"""
@@ -11,6 +13,7 @@ class ProjectExcelFormatRead(BaseModel):
     date_format: Optional[str]
     start_date_col: str
     end_date_col: str
+    is_tested: bool  
     created_at: datetime
     created_by: str
     updated_at: datetime

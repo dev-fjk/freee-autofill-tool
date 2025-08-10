@@ -57,13 +57,13 @@ CREATE TABLE project_excel_formats (
     date_format VARCHAR(20),
     start_date_col VARCHAR(10) NOT NULL,
     end_date_col VARCHAR(10) NOT NULL,
+    is_tested BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(20) NOT NULL,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(20) NOT NULL
 );
 
--- カラムコメントはこうする
 COMMENT ON COLUMN project_excel_formats.project_id IS 'プロジェクトID(projects.project_id)';
 COMMENT ON COLUMN project_excel_formats.date_type IS '1: 日のみ, 2: 年月日';
 COMMENT ON COLUMN project_excel_formats.start_line IS '開始行';
