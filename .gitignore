@@ -31,4 +31,5 @@ Desktop.ini
 # Python virtualenv metadata
 *.egg-info/
 
+logs/*
 .env
