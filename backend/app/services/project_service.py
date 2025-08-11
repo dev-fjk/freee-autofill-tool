@@ -169,7 +169,6 @@ def update_project(db: Session, project_id: int, project_update: ProjectUpdate) 
     project.end_time = datetime.strptime(project_update.end_time, "%H:%M").time()
     project.start_break_time = datetime.strptime(project_update.start_break_time, "%H:%M").time()
     project.end_break_time = datetime.strptime(project_update.end_break_time, "%H:%M").time()
-    # update_keyは変更しない
 
     project.updated_at = now_jst()
     project.updated_by = project_update.updated_by

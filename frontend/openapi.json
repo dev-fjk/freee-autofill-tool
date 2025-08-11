@@ -1,0 +1,633 @@
+{
+    "openapi": "3.1.0",
+    "info": { "title": "FastAPI", "version": "0.1.0" },
+    "paths": {
+        "/projects/{project_id}": {
+            "get": {
+                "tags": ["ProjectAPI"],
+                "summary": "プロジェクト詳細取得",
+                "description": "プロジェクトIDで詳細取得",
+                "operationId": "get_project_detail_projects__project_id__get",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer", "description": "プロジェクトID", "title": "Project Id" },
+                        "description": "プロジェクトID"
+                    },
+                    {
+                        "name": "x-employee-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ProjectDetailRead" } }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["ProjectAPI"],
+                "summary": "プロジェクト更新",
+                "description": "指定IDのプロジェクトを更新する",
+                "operationId": "update_existing_project_projects__project_id__put",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer", "description": "プロジェクトID", "title": "Project Id" },
+                        "description": "プロジェクトID"
+                    },
+                    {
+                        "name": "x-employee-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProjectUpdate" } } }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProjectRead" } } }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["ProjectAPI"],
+                "summary": "プロジェクト削除",
+                "description": "指定IDのプロジェクトを削除します。update_keyが一致しない場合はエラーになります。",
+                "operationId": "delete_project_projects__project_id__delete",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer", "description": "プロジェクトID", "title": "Project Id" },
+                        "description": "プロジェクトID"
+                    },
+                    {
+                        "name": "update_key",
+                        "in": "query",
+                        "required": true,
+                        "schema": { "type": "integer", "description": "更新キー（0〜9999）", "title": "Update Key" },
+                        "description": "更新キー（0〜9999）"
+                    },
+                    {
+                        "name": "x-employee-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                    }
+                ],
+                "responses": {
+                    "204": { "description": "Successful Response" },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } }
+                        }
+                    }
+                }
+            }
+        },
+        "/projects": {
+            "get": {
+                "tags": ["ProjectAPI"],
+                "summary": "プロジェクト一覧取得",
+                "description": "プロジェクトIDや名前で絞り込み・ページング対応",
+                "operationId": "get_projects_projects_get",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Project Id" }
+                    },
+                    {
+                        "name": "project_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Project Name" }
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "required": false,
+                        "schema": { "type": "integer", "minimum": 1, "default": 1, "title": "Page Number" }
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 10,
+                            "default": 30,
+                            "title": "Page Size"
+                        }
+                    },
+                    {
+                        "name": "x-employee-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/PaginatedResponse_ProjectRead_" }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["ProjectAPI"],
+                "summary": "プロジェクト作成",
+                "description": "新しいプロジェクトを登録する",
+                "operationId": "create_new_project_projects_post",
+                "parameters": [
+                    {
+                        "name": "x-employee-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProjectCreate" } } }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProjectRead" } } }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": { "$ref": "#/components/schemas/ValidationError" },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "PaginatedResponse_ProjectRead_": {
+                "properties": {
+                    "pagination": { "$ref": "#/components/schemas/Pagination" },
+                    "items": {
+                        "items": { "$ref": "#/components/schemas/ProjectRead" },
+                        "type": "array",
+                        "title": "Items"
+                    }
+                },
+                "type": "object",
+                "required": ["pagination", "items"],
+                "title": "PaginatedResponse[ProjectRead]"
+            },
+            "Pagination": {
+                "properties": {
+                    "page_number": { "type": "integer", "title": "Page Number" },
+                    "page_size": { "type": "integer", "title": "Page Size" },
+                    "total": { "type": "integer", "title": "Total" },
+                    "item_count": { "type": "integer", "title": "Item Count" },
+                    "total_pages": { "type": "integer", "title": "Total Pages" }
+                },
+                "type": "object",
+                "required": ["page_number", "page_size", "total", "item_count", "total_pages"],
+                "title": "Pagination"
+            },
+            "ProjectCreate": {
+                "properties": {
+                    "project_name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "title": "Project Name",
+                        "description": "プロジェクト名",
+                        "example": "Test Project"
+                    },
+                    "project_description": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Project Description",
+                        "description": "プロジェクト説明",
+                        "example": "詳細説明"
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "title": "Start Time",
+                        "description": "開始時間 (HH:mm)",
+                        "example": "09:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "title": "End Time",
+                        "description": "終了時間 (HH:mm)",
+                        "example": "18:00"
+                    },
+                    "start_break_time": {
+                        "type": "string",
+                        "title": "Start Break Time",
+                        "description": "休憩開始時間 (HH:mm)",
+                        "example": "12:00"
+                    },
+                    "end_break_time": {
+                        "type": "string",
+                        "title": "End Break Time",
+                        "description": "休憩終了時間 (HH:mm)",
+                        "example": "13:00"
+                    },
+                    "update_key": {
+                        "type": "integer",
+                        "title": "Update Key",
+                        "description": "更新キー（0〜9999）",
+                        "example": 1234
+                    },
+                    "created_by": {
+                        "type": "string",
+                        "title": "Created By",
+                        "description": "作成者",
+                        "example": "e024"
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "title": "Updated By",
+                        "description": "更新者",
+                        "example": "e024"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "project_name",
+                    "start_time",
+                    "end_time",
+                    "start_break_time",
+                    "end_break_time",
+                    "update_key",
+                    "created_by",
+                    "updated_by"
+                ],
+                "title": "ProjectCreate",
+                "description": "プロジェクト作成"
+            },
+            "ProjectDetailRead": {
+                "properties": {
+                    "project_id": {
+                        "type": "integer",
+                        "title": "Project Id",
+                        "description": "プロジェクトID",
+                        "example": 1
+                    },
+                    "project_name": {
+                        "type": "string",
+                        "title": "Project Name",
+                        "description": "プロジェクト名",
+                        "example": "Test Project"
+                    },
+                    "project_description": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Project Description",
+                        "description": "プロジェクト説明",
+                        "example": "詳細説明"
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "Start Time",
+                        "description": "開始時間",
+                        "example": "09:00:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "End Time",
+                        "description": "終了時間",
+                        "example": "18:00:00"
+                    },
+                    "start_break_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "Start Break Time",
+                        "description": "休憩開始時間",
+                        "example": "12:00:00"
+                    },
+                    "end_break_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "End Break Time",
+                        "description": "休憩終了時間",
+                        "example": "13:00:00"
+                    },
+                    "update_key": {
+                        "type": "integer",
+                        "title": "Update Key",
+                        "description": "更新キー（0〜9999）",
+                        "example": 1234
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At",
+                        "description": "作成日時",
+                        "example": "2025-08-10T09:00:00"
+                    },
+                    "created_by": {
+                        "type": "string",
+                        "title": "Created By",
+                        "description": "作成者",
+                        "example": "e024"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Updated At",
+                        "description": "更新日時",
+                        "example": "2025-08-10T10:00:00"
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "title": "Updated By",
+                        "description": "更新者",
+                        "example": "e024"
+                    },
+                    "excel_format": {
+                        "anyOf": [{ "$ref": "#/components/schemas/ProjectExcelFormatRead" }, { "type": "null" }],
+                        "description": "Excelフォーマット情報"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "project_id",
+                    "project_name",
+                    "start_time",
+                    "end_time",
+                    "start_break_time",
+                    "end_break_time",
+                    "update_key",
+                    "created_at",
+                    "created_by",
+                    "updated_at",
+                    "updated_by"
+                ],
+                "title": "ProjectDetailRead",
+                "description": "Project詳細(Excelフォーマット情報を含む)"
+            },
+            "ProjectExcelFormatRead": {
+                "properties": {
+                    "project_id": { "type": "integer", "title": "Project Id" },
+                    "date_type": { "type": "integer", "title": "Date Type" },
+                    "start_line": { "type": "integer", "title": "Start Line" },
+                    "date_col": { "type": "string", "title": "Date Col" },
+                    "date_format": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Date Format" },
+                    "start_date_col": { "type": "string", "title": "Start Date Col" },
+                    "end_date_col": { "type": "string", "title": "End Date Col" },
+                    "is_tested": { "type": "boolean", "title": "Is Tested" },
+                    "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+                    "created_by": { "type": "string", "title": "Created By" },
+                    "updated_at": { "type": "string", "format": "date-time", "title": "Updated At" },
+                    "updated_by": { "type": "string", "title": "Updated By" }
+                },
+                "type": "object",
+                "required": [
+                    "project_id",
+                    "date_type",
+                    "start_line",
+                    "date_col",
+                    "date_format",
+                    "start_date_col",
+                    "end_date_col",
+                    "is_tested",
+                    "created_at",
+                    "created_by",
+                    "updated_at",
+                    "updated_by"
+                ],
+                "title": "ProjectExcelFormatRead",
+                "description": "Excelフォーマット情報"
+            },
+            "ProjectRead": {
+                "properties": {
+                    "project_id": {
+                        "type": "integer",
+                        "title": "Project Id",
+                        "description": "プロジェクトID",
+                        "example": 1
+                    },
+                    "project_name": {
+                        "type": "string",
+                        "title": "Project Name",
+                        "description": "プロジェクト名",
+                        "example": "Test Project"
+                    },
+                    "project_description": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Project Description",
+                        "description": "プロジェクト説明",
+                        "example": "詳細説明"
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "Start Time",
+                        "description": "開始時間",
+                        "example": "09:00:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "End Time",
+                        "description": "終了時間",
+                        "example": "18:00:00"
+                    },
+                    "start_break_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "Start Break Time",
+                        "description": "休憩開始時間",
+                        "example": "12:00:00"
+                    },
+                    "end_break_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "End Break Time",
+                        "description": "休憩終了時間",
+                        "example": "13:00:00"
+                    },
+                    "update_key": {
+                        "type": "integer",
+                        "title": "Update Key",
+                        "description": "更新キー（0〜9999）",
+                        "example": 1234
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At",
+                        "description": "作成日時",
+                        "example": "2025-08-10T09:00:00"
+                    },
+                    "created_by": {
+                        "type": "string",
+                        "title": "Created By",
+                        "description": "作成者",
+                        "example": "e024"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Updated At",
+                        "description": "更新日時",
+                        "example": "2025-08-10T10:00:00"
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "title": "Updated By",
+                        "description": "更新者",
+                        "example": "e024"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "project_id",
+                    "project_name",
+                    "start_time",
+                    "end_time",
+                    "start_break_time",
+                    "end_break_time",
+                    "update_key",
+                    "created_at",
+                    "created_by",
+                    "updated_at",
+                    "updated_by"
+                ],
+                "title": "ProjectRead",
+                "description": "プロジェクト情報"
+            },
+            "ProjectUpdate": {
+                "properties": {
+                    "project_name": {
+                        "type": "string",
+                        "title": "Project Name",
+                        "description": "プロジェクト名",
+                        "example": "Updated Project"
+                    },
+                    "project_description": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Project Description",
+                        "description": "プロジェクト説明",
+                        "example": "更新された説明"
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "title": "Start Time",
+                        "description": "開始時間 (HH:mm)",
+                        "example": "09:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "title": "End Time",
+                        "description": "終了時間 (HH:mm)",
+                        "example": "18:00"
+                    },
+                    "start_break_time": {
+                        "type": "string",
+                        "title": "Start Break Time",
+                        "description": "休憩開始時間 (HH:mm)",
+                        "example": "12:00"
+                    },
+                    "end_break_time": {
+                        "type": "string",
+                        "title": "End Break Time",
+                        "description": "休憩終了時間 (HH:mm)",
+                        "example": "13:00"
+                    },
+                    "update_key": {
+                        "type": "integer",
+                        "title": "Update Key",
+                        "description": "更新キー（0〜9999）",
+                        "example": 1234
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "title": "Updated By",
+                        "description": "更新者",
+                        "example": "e024"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "project_name",
+                    "start_time",
+                    "end_time",
+                    "start_break_time",
+                    "end_break_time",
+                    "update_key",
+                    "updated_by"
+                ],
+                "title": "ProjectUpdate",
+                "description": "プロジェクト更新（PUT）用スキーマ。全項目必須で更新します。"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": { "type": "string", "title": "Message" },
+                    "type": { "type": "string", "title": "Error Type" }
+                },
+                "type": "object",
+                "required": ["loc", "msg", "type"],
+                "title": "ValidationError"
+            }
+        }
+    }
+}

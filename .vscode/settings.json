@@ -15,6 +15,54 @@
   "editor.formatOnSave": true,
   "files.encoding": "utf8",
   "files.eol": "\n",
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "always"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "always"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "always"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "always"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact"
+  ],
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
       "text": "必ず日本語で書いてください。"
