@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
@@ -8,7 +7,7 @@ configuration.ts
 docs/HTTPValidationError.md
 docs/PaginatedResponseProjectRead.md
 docs/Pagination.md
-docs/ProjectAPIApi.md
+docs/ProjectApi.md
 docs/ProjectCreate.md
 docs/ProjectDetailRead.md
 docs/ProjectExcelFormatRead.md

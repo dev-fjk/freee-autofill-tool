@@ -4,10 +4,10 @@
     "paths": {
         "/projects/{project_id}": {
             "get": {
-                "tags": ["ProjectAPI"],
+                "tags": ["Project"],
                 "summary": "プロジェクト詳細取得",
                 "description": "プロジェクトIDで詳細取得",
-                "operationId": "get_project_detail_projects__project_id__get",
+                "operationId": "getProjectDetail",
                 "parameters": [
                     {
                         "name": "project_id",
@@ -39,10 +39,10 @@
                 }
             },
             "put": {
-                "tags": ["ProjectAPI"],
+                "tags": ["Project"],
                 "summary": "プロジェクト更新",
                 "description": "指定IDのプロジェクトを更新する",
-                "operationId": "update_existing_project_projects__project_id__put",
+                "operationId": "updateProject",
                 "parameters": [
                     {
                         "name": "project_id",
@@ -76,10 +76,10 @@
                 }
             },
             "delete": {
-                "tags": ["ProjectAPI"],
+                "tags": ["Project"],
                 "summary": "プロジェクト削除",
                 "description": "指定IDのプロジェクトを削除します。update_keyが一致しない場合はエラーになります。",
-                "operationId": "delete_project_projects__project_id__delete",
+                "operationId": "deleteProject",
                 "parameters": [
                     {
                         "name": "project_id",
@@ -115,10 +115,10 @@
         },
         "/projects": {
             "get": {
-                "tags": ["ProjectAPI"],
+                "tags": ["Project"],
                 "summary": "プロジェクト一覧取得",
                 "description": "プロジェクトIDや名前で絞り込み・ページング対応",
-                "operationId": "get_projects_projects_get",
+                "operationId": "getProjects",
                 "parameters": [
                     {
                         "name": "project_id",
@@ -175,10 +175,10 @@
                 }
             },
             "post": {
-                "tags": ["ProjectAPI"],
+                "tags": ["Project"],
                 "summary": "プロジェクト作成",
                 "description": "新しいプロジェクトを登録する",
-                "operationId": "create_new_project_projects_post",
+                "operationId": "createProject",
                 "parameters": [
                     {
                         "name": "x-employee-id",

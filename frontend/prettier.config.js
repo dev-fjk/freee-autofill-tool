@@ -1,7 +1,8 @@
 export default {
-  semi: true,
-  singleQuote: false,
-  trailingComma: "es5",
-  tabWidth: 4,
-  printWidth: 120,
+    semi: true,
+    singleQuote: false,
+    trailingComma: "es5",
+    tabWidth: 4,
+    printWidth: 120,
+    EndOfLineState: "lf",
 };
