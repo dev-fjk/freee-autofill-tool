@@ -39,6 +39,44 @@ export interface HTTPValidationError {
 /**
  * 
  * @export
+ * @interface LoginRequest
+ */
+export interface LoginRequest {
+    /**
+     * 社員ID (e + 数字1〜5桁、最大6文字)
+     * @type {string}
+     * @memberof LoginRequest
+     */
+    'employee_id': string;
+    /**
+     * 共通パスワード
+     * @type {string}
+     * @memberof LoginRequest
+     */
+    'password': string;
+}
+/**
+ * 
+ * @export
+ * @interface LoginResponse
+ */
+export interface LoginResponse {
+    /**
+     * 社員ID
+     * @type {string}
+     * @memberof LoginResponse
+     */
+    'employee_id': string;
+    /**
+     * 権限（user または admin）
+     * @type {string}
+     * @memberof LoginResponse
+     */
+    'role': string;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedResponseProjectRead
  */
 export interface PaginatedResponseProjectRead {
@@ -485,6 +523,116 @@ export interface ValidationErrorLocInner {
 }
 
 /**
+ * AuthApi - axios parameter creator
+ * @export
+ */
+export const AuthApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 社員IDと共通パスワードでログイン。成功時は社員IDを返す。
+         * @summary ログイン
+         * @param {LoginRequest} loginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        login: async (loginRequest: LoginRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'loginRequest' is not null or undefined
+            assertParamExists('login', 'loginRequest', loginRequest)
+            const localVarPath = `/login`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(loginRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AuthApi - functional programming interface
+ * @export
+ */
+export const AuthApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AuthApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 社員IDと共通パスワードでログイン。成功時は社員IDを返す。
+         * @summary ログイン
+         * @param {LoginRequest} loginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async login(loginRequest: LoginRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.login(loginRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.login']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * AuthApi - factory interface
+ * @export
+ */
+export const AuthApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AuthApiFp(configuration)
+    return {
+        /**
+         * 社員IDと共通パスワードでログイン。成功時は社員IDを返す。
+         * @summary ログイン
+         * @param {LoginRequest} loginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        login(loginRequest: LoginRequest, options?: RawAxiosRequestConfig): AxiosPromise<LoginResponse> {
+            return localVarFp.login(loginRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AuthApi - object-oriented interface
+ * @export
+ * @class AuthApi
+ * @extends {BaseAPI}
+ */
+export class AuthApi extends BaseAPI {
+    /**
+     * 社員IDと共通パスワードでログイン。成功時は社員IDを返す。
+     * @summary ログイン
+     * @param {LoginRequest} loginRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public login(loginRequest: LoginRequest, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).login(loginRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * ProjectApi - axios parameter creator
  * @export
  */
@@ -494,11 +642,12 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
          * 新しいプロジェクトを登録する
          * @summary プロジェクト作成
          * @param {ProjectCreate} projectCreate 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createProject: async (projectCreate: ProjectCreate, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createProject: async (projectCreate: ProjectCreate, xEmployeeId?: string, xRole?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectCreate' is not null or undefined
             assertParamExists('createProject', 'projectCreate', projectCreate)
             const localVarPath = `/projects`;
@@ -520,6 +669,9 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
             if (xEmployeeId != null) {
                 localVarHeaderParameter['x-employee-id'] = String(xEmployeeId);
             }
+            if (xRole != null) {
+                localVarHeaderParameter['x-role'] = String(xRole);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -535,11 +687,12 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
          * @summary プロジェクト削除
          * @param {number} projectId プロジェクトID
          * @param {number} updateKey 更新キー（0〜9999）
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteProject: async (projectId: number, updateKey: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteProject: async (projectId: number, updateKey: number, xEmployeeId?: string, xRole?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
             assertParamExists('deleteProject', 'projectId', projectId)
             // verify required parameter 'updateKey' is not null or undefined
@@ -566,6 +719,9 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
             if (xEmployeeId != null) {
                 localVarHeaderParameter['x-employee-id'] = String(xEmployeeId);
             }
+            if (xRole != null) {
+                localVarHeaderParameter['x-role'] = String(xRole);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -579,11 +735,12 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
          * プロジェクトIDで詳細取得
          * @summary プロジェクト詳細取得
          * @param {number} projectId プロジェクトID
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectDetail: async (projectId: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProjectDetail: async (projectId: number, xEmployeeId?: string, xRole?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
             assertParamExists('getProjectDetail', 'projectId', projectId)
             const localVarPath = `/projects/{project_id}`
@@ -604,6 +761,9 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
             if (xEmployeeId != null) {
                 localVarHeaderParameter['x-employee-id'] = String(xEmployeeId);
             }
+            if (xRole != null) {
+                localVarHeaderParameter['x-role'] = String(xRole);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -620,11 +780,12 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string | null} [projectName] 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjects: async (projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProjects: async (projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, xRole?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/projects`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -658,6 +819,9 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
             if (xEmployeeId != null) {
                 localVarHeaderParameter['x-employee-id'] = String(xEmployeeId);
             }
+            if (xRole != null) {
+                localVarHeaderParameter['x-role'] = String(xRole);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -672,11 +836,12 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
          * @summary プロジェクト更新
          * @param {number} projectId プロジェクトID
          * @param {ProjectUpdate} projectUpdate 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProject: async (projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateProject: async (projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, xRole?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
             assertParamExists('updateProject', 'projectId', projectId)
             // verify required parameter 'projectUpdate' is not null or undefined
@@ -700,6 +865,9 @@ export const ProjectApiAxiosParamCreator = function (configuration?: Configurati
 
             if (xEmployeeId != null) {
                 localVarHeaderParameter['x-employee-id'] = String(xEmployeeId);
+            }
+            if (xRole != null) {
+                localVarHeaderParameter['x-role'] = String(xRole);
             }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -725,12 +893,13 @@ export const ProjectApiFp = function(configuration?: Configuration) {
          * 新しいプロジェクトを登録する
          * @summary プロジェクト作成
          * @param {ProjectCreate} projectCreate 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createProject(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createProject(projectCreate, xEmployeeId, options);
+        async createProject(projectCreate: ProjectCreate, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createProject(projectCreate, xEmployeeId, xRole, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectApi.createProject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -740,12 +909,13 @@ export const ProjectApiFp = function(configuration?: Configuration) {
          * @summary プロジェクト削除
          * @param {number} projectId プロジェクトID
          * @param {number} updateKey 更新キー（0〜9999）
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteProject(projectId, updateKey, xEmployeeId, options);
+        async deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteProject(projectId, updateKey, xEmployeeId, xRole, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectApi.deleteProject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -754,12 +924,13 @@ export const ProjectApiFp = function(configuration?: Configuration) {
          * プロジェクトIDで詳細取得
          * @summary プロジェクト詳細取得
          * @param {number} projectId プロジェクトID
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProjectDetail(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectDetailRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectDetail(projectId, xEmployeeId, options);
+        async getProjectDetail(projectId: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectDetailRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectDetail(projectId, xEmployeeId, xRole, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectApi.getProjectDetail']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -771,12 +942,13 @@ export const ProjectApiFp = function(configuration?: Configuration) {
          * @param {string | null} [projectName] 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedResponseProjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, options);
+        async getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedResponseProjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, xRole, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectApi.getProjects']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -786,12 +958,13 @@ export const ProjectApiFp = function(configuration?: Configuration) {
          * @summary プロジェクト更新
          * @param {number} projectId プロジェクトID
          * @param {ProjectUpdate} projectUpdate 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProject(projectId, projectUpdate, xEmployeeId, options);
+        async updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProject(projectId, projectUpdate, xEmployeeId, xRole, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectApi.updateProject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -810,35 +983,38 @@ export const ProjectApiFactory = function (configuration?: Configuration, basePa
          * 新しいプロジェクトを登録する
          * @summary プロジェクト作成
          * @param {ProjectCreate} projectCreate 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createProject(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
-            return localVarFp.createProject(projectCreate, xEmployeeId, options).then((request) => request(axios, basePath));
+        createProject(projectCreate: ProjectCreate, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
+            return localVarFp.createProject(projectCreate, xEmployeeId, xRole, options).then((request) => request(axios, basePath));
         },
         /**
          * 指定IDのプロジェクトを削除します。update_keyが一致しない場合はエラーになります。
          * @summary プロジェクト削除
          * @param {number} projectId プロジェクトID
          * @param {number} updateKey 更新キー（0〜9999）
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteProject(projectId, updateKey, xEmployeeId, options).then((request) => request(axios, basePath));
+        deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteProject(projectId, updateKey, xEmployeeId, xRole, options).then((request) => request(axios, basePath));
         },
         /**
          * プロジェクトIDで詳細取得
          * @summary プロジェクト詳細取得
          * @param {number} projectId プロジェクトID
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectDetail(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectDetailRead> {
-            return localVarFp.getProjectDetail(projectId, xEmployeeId, options).then((request) => request(axios, basePath));
+        getProjectDetail(projectId: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectDetailRead> {
+            return localVarFp.getProjectDetail(projectId, xEmployeeId, xRole, options).then((request) => request(axios, basePath));
         },
         /**
          * プロジェクトIDや名前で絞り込み・ページング対応
@@ -847,24 +1023,26 @@ export const ProjectApiFactory = function (configuration?: Configuration, basePa
          * @param {string | null} [projectName] 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedResponseProjectRead> {
-            return localVarFp.getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, options).then((request) => request(axios, basePath));
+        getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedResponseProjectRead> {
+            return localVarFp.getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, xRole, options).then((request) => request(axios, basePath));
         },
         /**
          * 指定IDのプロジェクトを更新する
          * @summary プロジェクト更新
          * @param {number} projectId プロジェクトID
          * @param {ProjectUpdate} projectUpdate 
-         * @param {string} [xEmployeeId] 
+         * @param {string} [xEmployeeId] 社員ID (例: e024)
+         * @param {string} [xRole] 権限 (user または admin)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
-            return localVarFp.updateProject(projectId, projectUpdate, xEmployeeId, options).then((request) => request(axios, basePath));
+        updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
+            return localVarFp.updateProject(projectId, projectUpdate, xEmployeeId, xRole, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -880,13 +1058,14 @@ export class ProjectApi extends BaseAPI {
      * 新しいプロジェクトを登録する
      * @summary プロジェクト作成
      * @param {ProjectCreate} projectCreate 
-     * @param {string} [xEmployeeId] 
+     * @param {string} [xEmployeeId] 社員ID (例: e024)
+     * @param {string} [xRole] 権限 (user または admin)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectApi
      */
-    public createProject(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectApiFp(this.configuration).createProject(projectCreate, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public createProject(projectCreate: ProjectCreate, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).createProject(projectCreate, xEmployeeId, xRole, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -894,26 +1073,28 @@ export class ProjectApi extends BaseAPI {
      * @summary プロジェクト削除
      * @param {number} projectId プロジェクトID
      * @param {number} updateKey 更新キー（0〜9999）
-     * @param {string} [xEmployeeId] 
+     * @param {string} [xEmployeeId] 社員ID (例: e024)
+     * @param {string} [xRole] 権限 (user または admin)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectApi
      */
-    public deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectApiFp(this.configuration).deleteProject(projectId, updateKey, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).deleteProject(projectId, updateKey, xEmployeeId, xRole, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * プロジェクトIDで詳細取得
      * @summary プロジェクト詳細取得
      * @param {number} projectId プロジェクトID
-     * @param {string} [xEmployeeId] 
+     * @param {string} [xEmployeeId] 社員ID (例: e024)
+     * @param {string} [xRole] 権限 (user または admin)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectApi
      */
-    public getProjectDetail(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectApiFp(this.configuration).getProjectDetail(projectId, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public getProjectDetail(projectId: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).getProjectDetail(projectId, xEmployeeId, xRole, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -923,13 +1104,14 @@ export class ProjectApi extends BaseAPI {
      * @param {string | null} [projectName] 
      * @param {number} [pageNumber] 
      * @param {number} [pageSize] 
-     * @param {string} [xEmployeeId] 
+     * @param {string} [xEmployeeId] 社員ID (例: e024)
+     * @param {string} [xRole] 権限 (user または admin)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectApi
      */
-    public getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectApiFp(this.configuration).getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, xRole, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -937,13 +1119,14 @@ export class ProjectApi extends BaseAPI {
      * @summary プロジェクト更新
      * @param {number} projectId プロジェクトID
      * @param {ProjectUpdate} projectUpdate 
-     * @param {string} [xEmployeeId] 
+     * @param {string} [xEmployeeId] 社員ID (例: e024)
+     * @param {string} [xRole] 権限 (user または admin)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectApi
      */
-    public updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectApiFp(this.configuration).updateProject(projectId, projectUpdate, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, xRole?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).updateProject(projectId, projectUpdate, xEmployeeId, xRole, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

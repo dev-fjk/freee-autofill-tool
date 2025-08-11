@@ -3,7 +3,6 @@ import { Box, Flex, Input, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr } from
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import Header from "../components/Header";
 import Pagination from "../components/Pagination";
 import { useProjects } from "../hooks/useProjects";
 
@@ -39,7 +38,6 @@ const ProjectsPage = () => {
 
     return (
         <>
-            <Header />
             <Box maxW={{ base: "100%", md: "1400px", xl: "1800px" }} mx="auto" px={{ base: 4, md: 6 }} py={6}>
                 <Flex mb={4} alignItems="center">
                     <Input

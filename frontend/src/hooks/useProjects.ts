@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { PaginatedResponseProjectRead, Pagination, ProjectRead } from "../api/api";
 import { ProjectApi } from "../api/api";
 import { Configuration } from "../api/configuration";
+import { getUserInfo } from "../utils/auth";
 
 type UseProjectsParams = {
     projectId?: number;
@@ -11,12 +12,6 @@ type UseProjectsParams = {
     pageNumber?: number;
     pageSize?: number;
 };
-
-const config = new Configuration({
-    basePath: "/api",
-});
-
-const api = new ProjectApi(config);
 
 /**
  * プロジェクト一覧を取得し、状態管理する
@@ -30,6 +25,18 @@ export const useProjects = ({ projectId, projectName, pageNumber = 1, pageSize =
     useEffect(() => {
         setLoading(true);
         setError(null);
+
+        const { employeeId, role } = getUserInfo();
+        const config = new Configuration({
+            basePath: "/api",
+            baseOptions: {
+                headers: {
+                    "x-employee-id": employeeId ?? "",
+                    "x-role": role ?? "",
+                },
+            },
+        });
+        const api = new ProjectApi(config);
 
         api.getProjects(projectId, projectName, pageNumber, pageSize)
             .then((response: AxiosResponse<PaginatedResponseProjectRead>) => {

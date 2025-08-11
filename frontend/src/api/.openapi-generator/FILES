@@ -4,7 +4,10 @@ api.ts
 base.ts
 common.ts
 configuration.ts
+docs/AuthApi.md
 docs/HTTPValidationError.md
+docs/LoginRequest.md
+docs/LoginResponse.md
 docs/PaginatedResponseProjectRead.md
 docs/Pagination.md
 docs/ProjectApi.md
