@@ -10,14 +10,6 @@ const Header = () => {
                         Freee Autofill Tool
                     </Heading>
                 </Link>
-                <Link
-                    as={RouterLink}
-                    to="/projects"
-                    _hover={{ textDecoration: "none", color: "blue.800" }}
-                    fontSize="md"
-                >
-                    勤怠登録ツール
-                </Link>
             </Flex>
         </Box>
     );

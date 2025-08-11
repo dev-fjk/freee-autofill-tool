@@ -3,7 +3,7 @@ import logging
 import logging.config
 from pathlib import Path
 
-from app.config.context import employee_id_ctx_var, request_id_ctx_var, request_info_ctx_var
+from app.config.context import employee_id_ctx_var, request_id_ctx_var, request_info_ctx_var, role_ctx_var
 
 # ✅ backend/app/config から2階層上がって projectroot を取得
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -16,6 +16,7 @@ class JsonFormatter(logging.Formatter):
         request_id = request_id_ctx_var.get("N/A")
         request_info = request_info_ctx_var.get({})
         employee_id = employee_id_ctx_var.get(None)
+        role = role_ctx_var.get(None)  # ここを追加
 
         log_record = {
             "time": self.formatTime(record, self.datefmt),
@@ -30,6 +31,9 @@ class JsonFormatter(logging.Formatter):
 
         if employee_id is not None:
             log_record["employee_id"] = employee_id
+
+        if role is not None:  # ここを追加
+            log_record["role"] = role
 
         return json.dumps(log_record)
 

@@ -2,6 +2,32 @@
     "openapi": "3.1.0",
     "info": { "title": "FastAPI", "version": "0.1.0" },
     "paths": {
+        "/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "ログイン",
+                "description": "社員IDと共通パスワードでログイン。成功時は社員IDを返す。",
+                "operationId": "login",
+                "requestBody": {
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/LoginResponse" } }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } }
+                        }
+                    }
+                }
+            }
+        },
         "/projects/{project_id}": {
             "get": {
                 "tags": ["Project"],
@@ -20,7 +46,27 @@
                         "name": "x-employee-id",
                         "in": "header",
                         "required": false,
-                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                        "schema": {
+                            "type": "string",
+                            "description": "社員ID (例: e024)",
+                            "default": "e024",
+                            "title": "X-Employee-Id"
+                        },
+                        "description": "社員ID (例: e024)",
+                        "example": "e024"
+                    },
+                    {
+                        "name": "x-role",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "権限 (user または admin)",
+                            "default": "user",
+                            "title": "X-Role"
+                        },
+                        "description": "権限 (user または admin)",
+                        "example": "user"
                     }
                 ],
                 "responses": {
@@ -55,7 +101,27 @@
                         "name": "x-employee-id",
                         "in": "header",
                         "required": false,
-                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                        "schema": {
+                            "type": "string",
+                            "description": "社員ID (例: e024)",
+                            "default": "e024",
+                            "title": "X-Employee-Id"
+                        },
+                        "description": "社員ID (例: e024)",
+                        "example": "e024"
+                    },
+                    {
+                        "name": "x-role",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "権限 (user または admin)",
+                            "default": "user",
+                            "title": "X-Role"
+                        },
+                        "description": "権限 (user または admin)",
+                        "example": "user"
                     }
                 ],
                 "requestBody": {
@@ -99,7 +165,27 @@
                         "name": "x-employee-id",
                         "in": "header",
                         "required": false,
-                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                        "schema": {
+                            "type": "string",
+                            "description": "社員ID (例: e024)",
+                            "default": "e024",
+                            "title": "X-Employee-Id"
+                        },
+                        "description": "社員ID (例: e024)",
+                        "example": "e024"
+                    },
+                    {
+                        "name": "x-role",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "権限 (user または admin)",
+                            "default": "user",
+                            "title": "X-Role"
+                        },
+                        "description": "権限 (user または admin)",
+                        "example": "user"
                     }
                 ],
                 "responses": {
@@ -154,7 +240,27 @@
                         "name": "x-employee-id",
                         "in": "header",
                         "required": false,
-                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                        "schema": {
+                            "type": "string",
+                            "description": "社員ID (例: e024)",
+                            "default": "e024",
+                            "title": "X-Employee-Id"
+                        },
+                        "description": "社員ID (例: e024)",
+                        "example": "e024"
+                    },
+                    {
+                        "name": "x-role",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "権限 (user または admin)",
+                            "default": "user",
+                            "title": "X-Role"
+                        },
+                        "description": "権限 (user または admin)",
+                        "example": "user"
                     }
                 ],
                 "responses": {
@@ -184,7 +290,27 @@
                         "name": "x-employee-id",
                         "in": "header",
                         "required": false,
-                        "schema": { "type": "string", "title": "X-Employee-Id" }
+                        "schema": {
+                            "type": "string",
+                            "description": "社員ID (例: e024)",
+                            "default": "e024",
+                            "title": "X-Employee-Id"
+                        },
+                        "description": "社員ID (例: e024)",
+                        "example": "e024"
+                    },
+                    {
+                        "name": "x-role",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "権限 (user または admin)",
+                            "default": "user",
+                            "title": "X-Role"
+                        },
+                        "description": "権限 (user または admin)",
+                        "example": "user"
                     }
                 ],
                 "requestBody": {
@@ -218,6 +344,44 @@
                 },
                 "type": "object",
                 "title": "HTTPValidationError"
+            },
+            "LoginRequest": {
+                "properties": {
+                    "employee_id": {
+                        "type": "string",
+                        "title": "Employee Id",
+                        "description": "社員ID (e + 数字1〜5桁、最大6文字)",
+                        "example": "e024"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password",
+                        "description": "共通パスワード",
+                        "example": "normal_user"
+                    }
+                },
+                "type": "object",
+                "required": ["employee_id", "password"],
+                "title": "LoginRequest"
+            },
+            "LoginResponse": {
+                "properties": {
+                    "employee_id": {
+                        "type": "string",
+                        "title": "Employee Id",
+                        "description": "社員ID",
+                        "example": "e024"
+                    },
+                    "role": {
+                        "type": "string",
+                        "title": "Role",
+                        "description": "権限（user または admin）",
+                        "example": "user"
+                    }
+                },
+                "type": "object",
+                "required": ["employee_id", "role"],
+                "title": "LoginResponse"
             },
             "PaginatedResponse_ProjectRead_": {
                 "properties": {

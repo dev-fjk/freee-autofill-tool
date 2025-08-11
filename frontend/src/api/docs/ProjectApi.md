@@ -28,11 +28,13 @@ const configuration = new Configuration();
 const apiInstance = new ProjectApi(configuration);
 
 let projectCreate: ProjectCreate; //
-let xEmployeeId: string; // (optional) (default to undefined)
+let xEmployeeId: string; //社員ID (例: e024) (optional) (default to 'e024')
+let xRole: string; //権限 (user または admin) (optional) (default to 'user')
 
 const { status, data } = await apiInstance.createProject(
     projectCreate,
-    xEmployeeId
+    xEmployeeId,
+    xRole
 );
 ```
 
@@ -41,7 +43,8 @@ const { status, data } = await apiInstance.createProject(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **projectCreate** | **ProjectCreate**|  | |
-| **xEmployeeId** | [**string**] |  | (optional) defaults to undefined|
+| **xEmployeeId** | [**string**] | 社員ID (例: e024) | (optional) defaults to 'e024'|
+| **xRole** | [**string**] | 権限 (user または admin) | (optional) defaults to 'user'|
 
 
 ### Return type
@@ -84,12 +87,14 @@ const apiInstance = new ProjectApi(configuration);
 
 let projectId: number; //プロジェクトID (default to undefined)
 let updateKey: number; //更新キー（0〜9999） (default to undefined)
-let xEmployeeId: string; // (optional) (default to undefined)
+let xEmployeeId: string; //社員ID (例: e024) (optional) (default to 'e024')
+let xRole: string; //権限 (user または admin) (optional) (default to 'user')
 
 const { status, data } = await apiInstance.deleteProject(
     projectId,
     updateKey,
-    xEmployeeId
+    xEmployeeId,
+    xRole
 );
 ```
 
@@ -99,7 +104,8 @@ const { status, data } = await apiInstance.deleteProject(
 |------------- | ------------- | ------------- | -------------|
 | **projectId** | [**number**] | プロジェクトID | defaults to undefined|
 | **updateKey** | [**number**] | 更新キー（0〜9999） | defaults to undefined|
-| **xEmployeeId** | [**string**] |  | (optional) defaults to undefined|
+| **xEmployeeId** | [**string**] | 社員ID (例: e024) | (optional) defaults to 'e024'|
+| **xRole** | [**string**] | 権限 (user または admin) | (optional) defaults to 'user'|
 
 
 ### Return type
@@ -141,11 +147,13 @@ const configuration = new Configuration();
 const apiInstance = new ProjectApi(configuration);
 
 let projectId: number; //プロジェクトID (default to undefined)
-let xEmployeeId: string; // (optional) (default to undefined)
+let xEmployeeId: string; //社員ID (例: e024) (optional) (default to 'e024')
+let xRole: string; //権限 (user または admin) (optional) (default to 'user')
 
 const { status, data } = await apiInstance.getProjectDetail(
     projectId,
-    xEmployeeId
+    xEmployeeId,
+    xRole
 );
 ```
 
@@ -154,7 +162,8 @@ const { status, data } = await apiInstance.getProjectDetail(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **projectId** | [**number**] | プロジェクトID | defaults to undefined|
-| **xEmployeeId** | [**string**] |  | (optional) defaults to undefined|
+| **xEmployeeId** | [**string**] | 社員ID (例: e024) | (optional) defaults to 'e024'|
+| **xRole** | [**string**] | 権限 (user または admin) | (optional) defaults to 'user'|
 
 
 ### Return type
@@ -199,14 +208,16 @@ let projectId: number; // (optional) (default to undefined)
 let projectName: string; // (optional) (default to undefined)
 let pageNumber: number; // (optional) (default to 1)
 let pageSize: number; // (optional) (default to 30)
-let xEmployeeId: string; // (optional) (default to undefined)
+let xEmployeeId: string; //社員ID (例: e024) (optional) (default to 'e024')
+let xRole: string; //権限 (user または admin) (optional) (default to 'user')
 
 const { status, data } = await apiInstance.getProjects(
     projectId,
     projectName,
     pageNumber,
     pageSize,
-    xEmployeeId
+    xEmployeeId,
+    xRole
 );
 ```
 
@@ -218,7 +229,8 @@ const { status, data } = await apiInstance.getProjects(
 | **projectName** | [**string**] |  | (optional) defaults to undefined|
 | **pageNumber** | [**number**] |  | (optional) defaults to 1|
 | **pageSize** | [**number**] |  | (optional) defaults to 30|
-| **xEmployeeId** | [**string**] |  | (optional) defaults to undefined|
+| **xEmployeeId** | [**string**] | 社員ID (例: e024) | (optional) defaults to 'e024'|
+| **xRole** | [**string**] | 権限 (user または admin) | (optional) defaults to 'user'|
 
 
 ### Return type
@@ -262,12 +274,14 @@ const apiInstance = new ProjectApi(configuration);
 
 let projectId: number; //プロジェクトID (default to undefined)
 let projectUpdate: ProjectUpdate; //
-let xEmployeeId: string; // (optional) (default to undefined)
+let xEmployeeId: string; //社員ID (例: e024) (optional) (default to 'e024')
+let xRole: string; //権限 (user または admin) (optional) (default to 'user')
 
 const { status, data } = await apiInstance.updateProject(
     projectId,
     projectUpdate,
-    xEmployeeId
+    xEmployeeId,
+    xRole
 );
 ```
 
@@ -277,7 +291,8 @@ const { status, data } = await apiInstance.updateProject(
 |------------- | ------------- | ------------- | -------------|
 | **projectUpdate** | **ProjectUpdate**|  | |
 | **projectId** | [**number**] | プロジェクトID | defaults to undefined|
-| **xEmployeeId** | [**string**] |  | (optional) defaults to undefined|
+| **xEmployeeId** | [**string**] | 社員ID (例: e024) | (optional) defaults to 'e024'|
+| **xRole** | [**string**] | 権限 (user または admin) | (optional) defaults to 'user'|
 
 
 ### Return type
