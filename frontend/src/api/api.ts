@@ -485,10 +485,10 @@ export interface ValidationErrorLocInner {
 }
 
 /**
- * ProjectAPIApi - axios parameter creator
+ * ProjectApi - axios parameter creator
  * @export
  */
-export const ProjectAPIApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ProjectApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 新しいプロジェクトを登録する
@@ -498,9 +498,9 @@ export const ProjectAPIApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createNewProjectProjectsPost: async (projectCreate: ProjectCreate, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createProject: async (projectCreate: ProjectCreate, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectCreate' is not null or undefined
-            assertParamExists('createNewProjectProjectsPost', 'projectCreate', projectCreate)
+            assertParamExists('createProject', 'projectCreate', projectCreate)
             const localVarPath = `/projects`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -539,11 +539,11 @@ export const ProjectAPIApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteProjectProjectsProjectIdDelete: async (projectId: number, updateKey: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteProject: async (projectId: number, updateKey: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
-            assertParamExists('deleteProjectProjectsProjectIdDelete', 'projectId', projectId)
+            assertParamExists('deleteProject', 'projectId', projectId)
             // verify required parameter 'updateKey' is not null or undefined
-            assertParamExists('deleteProjectProjectsProjectIdDelete', 'updateKey', updateKey)
+            assertParamExists('deleteProject', 'updateKey', updateKey)
             const localVarPath = `/projects/{project_id}`
                 .replace(`{${"project_id"}}`, encodeURIComponent(String(projectId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -583,9 +583,9 @@ export const ProjectAPIApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectDetailProjectsProjectIdGet: async (projectId: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProjectDetail: async (projectId: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
-            assertParamExists('getProjectDetailProjectsProjectIdGet', 'projectId', projectId)
+            assertParamExists('getProjectDetail', 'projectId', projectId)
             const localVarPath = `/projects/{project_id}`
                 .replace(`{${"project_id"}}`, encodeURIComponent(String(projectId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -624,7 +624,7 @@ export const ProjectAPIApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectsProjectsGet: async (projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProjects: async (projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/projects`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -676,11 +676,11 @@ export const ProjectAPIApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateExistingProjectProjectsProjectIdPut: async (projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateProject: async (projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
-            assertParamExists('updateExistingProjectProjectsProjectIdPut', 'projectId', projectId)
+            assertParamExists('updateProject', 'projectId', projectId)
             // verify required parameter 'projectUpdate' is not null or undefined
-            assertParamExists('updateExistingProjectProjectsProjectIdPut', 'projectUpdate', projectUpdate)
+            assertParamExists('updateProject', 'projectUpdate', projectUpdate)
             const localVarPath = `/projects/{project_id}`
                 .replace(`{${"project_id"}}`, encodeURIComponent(String(projectId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -715,11 +715,11 @@ export const ProjectAPIApiAxiosParamCreator = function (configuration?: Configur
 };
 
 /**
- * ProjectAPIApi - functional programming interface
+ * ProjectApi - functional programming interface
  * @export
  */
-export const ProjectAPIApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ProjectAPIApiAxiosParamCreator(configuration)
+export const ProjectApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProjectApiAxiosParamCreator(configuration)
     return {
         /**
          * 新しいプロジェクトを登録する
@@ -729,10 +729,10 @@ export const ProjectAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createNewProjectProjectsPost(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createNewProjectProjectsPost(projectCreate, xEmployeeId, options);
+        async createProject(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createProject(projectCreate, xEmployeeId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProjectAPIApi.createNewProjectProjectsPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ProjectApi.createProject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -744,10 +744,10 @@ export const ProjectAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteProjectProjectsProjectIdDelete(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteProjectProjectsProjectIdDelete(projectId, updateKey, xEmployeeId, options);
+        async deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteProject(projectId, updateKey, xEmployeeId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProjectAPIApi.deleteProjectProjectsProjectIdDelete']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ProjectApi.deleteProject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -758,10 +758,10 @@ export const ProjectAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProjectDetailProjectsProjectIdGet(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectDetailRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectDetailProjectsProjectIdGet(projectId, xEmployeeId, options);
+        async getProjectDetail(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectDetailRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectDetail(projectId, xEmployeeId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProjectAPIApi.getProjectDetailProjectsProjectIdGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ProjectApi.getProjectDetail']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -775,10 +775,10 @@ export const ProjectAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProjectsProjectsGet(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedResponseProjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectsProjectsGet(projectId, projectName, pageNumber, pageSize, xEmployeeId, options);
+        async getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedResponseProjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProjectAPIApi.getProjectsProjectsGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ProjectApi.getProjects']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -790,21 +790,21 @@ export const ProjectAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateExistingProjectProjectsProjectIdPut(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateExistingProjectProjectsProjectIdPut(projectId, projectUpdate, xEmployeeId, options);
+        async updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProject(projectId, projectUpdate, xEmployeeId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProjectAPIApi.updateExistingProjectProjectsProjectIdPut']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ProjectApi.updateProject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * ProjectAPIApi - factory interface
+ * ProjectApi - factory interface
  * @export
  */
-export const ProjectAPIApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ProjectAPIApiFp(configuration)
+export const ProjectApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProjectApiFp(configuration)
     return {
         /**
          * 新しいプロジェクトを登録する
@@ -814,8 +814,8 @@ export const ProjectAPIApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createNewProjectProjectsPost(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
-            return localVarFp.createNewProjectProjectsPost(projectCreate, xEmployeeId, options).then((request) => request(axios, basePath));
+        createProject(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
+            return localVarFp.createProject(projectCreate, xEmployeeId, options).then((request) => request(axios, basePath));
         },
         /**
          * 指定IDのプロジェクトを削除します。update_keyが一致しない場合はエラーになります。
@@ -826,8 +826,8 @@ export const ProjectAPIApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteProjectProjectsProjectIdDelete(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteProjectProjectsProjectIdDelete(projectId, updateKey, xEmployeeId, options).then((request) => request(axios, basePath));
+        deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteProject(projectId, updateKey, xEmployeeId, options).then((request) => request(axios, basePath));
         },
         /**
          * プロジェクトIDで詳細取得
@@ -837,8 +837,8 @@ export const ProjectAPIApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectDetailProjectsProjectIdGet(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectDetailRead> {
-            return localVarFp.getProjectDetailProjectsProjectIdGet(projectId, xEmployeeId, options).then((request) => request(axios, basePath));
+        getProjectDetail(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectDetailRead> {
+            return localVarFp.getProjectDetail(projectId, xEmployeeId, options).then((request) => request(axios, basePath));
         },
         /**
          * プロジェクトIDや名前で絞り込み・ページング対応
@@ -851,8 +851,8 @@ export const ProjectAPIApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectsProjectsGet(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedResponseProjectRead> {
-            return localVarFp.getProjectsProjectsGet(projectId, projectName, pageNumber, pageSize, xEmployeeId, options).then((request) => request(axios, basePath));
+        getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedResponseProjectRead> {
+            return localVarFp.getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, options).then((request) => request(axios, basePath));
         },
         /**
          * 指定IDのプロジェクトを更新する
@@ -863,19 +863,19 @@ export const ProjectAPIApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateExistingProjectProjectsProjectIdPut(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
-            return localVarFp.updateExistingProjectProjectsProjectIdPut(projectId, projectUpdate, xEmployeeId, options).then((request) => request(axios, basePath));
+        updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectRead> {
+            return localVarFp.updateProject(projectId, projectUpdate, xEmployeeId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * ProjectAPIApi - object-oriented interface
+ * ProjectApi - object-oriented interface
  * @export
- * @class ProjectAPIApi
+ * @class ProjectApi
  * @extends {BaseAPI}
  */
-export class ProjectAPIApi extends BaseAPI {
+export class ProjectApi extends BaseAPI {
     /**
      * 新しいプロジェクトを登録する
      * @summary プロジェクト作成
@@ -883,10 +883,10 @@ export class ProjectAPIApi extends BaseAPI {
      * @param {string} [xEmployeeId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProjectAPIApi
+     * @memberof ProjectApi
      */
-    public createNewProjectProjectsPost(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectAPIApiFp(this.configuration).createNewProjectProjectsPost(projectCreate, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public createProject(projectCreate: ProjectCreate, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).createProject(projectCreate, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -897,10 +897,10 @@ export class ProjectAPIApi extends BaseAPI {
      * @param {string} [xEmployeeId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProjectAPIApi
+     * @memberof ProjectApi
      */
-    public deleteProjectProjectsProjectIdDelete(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectAPIApiFp(this.configuration).deleteProjectProjectsProjectIdDelete(projectId, updateKey, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public deleteProject(projectId: number, updateKey: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).deleteProject(projectId, updateKey, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -910,10 +910,10 @@ export class ProjectAPIApi extends BaseAPI {
      * @param {string} [xEmployeeId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProjectAPIApi
+     * @memberof ProjectApi
      */
-    public getProjectDetailProjectsProjectIdGet(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectAPIApiFp(this.configuration).getProjectDetailProjectsProjectIdGet(projectId, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public getProjectDetail(projectId: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).getProjectDetail(projectId, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -926,10 +926,10 @@ export class ProjectAPIApi extends BaseAPI {
      * @param {string} [xEmployeeId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProjectAPIApi
+     * @memberof ProjectApi
      */
-    public getProjectsProjectsGet(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectAPIApiFp(this.configuration).getProjectsProjectsGet(projectId, projectName, pageNumber, pageSize, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public getProjects(projectId?: number | null, projectName?: string | null, pageNumber?: number, pageSize?: number, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).getProjects(projectId, projectName, pageNumber, pageSize, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -940,10 +940,10 @@ export class ProjectAPIApi extends BaseAPI {
      * @param {string} [xEmployeeId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProjectAPIApi
+     * @memberof ProjectApi
      */
-    public updateExistingProjectProjectsProjectIdPut(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
-        return ProjectAPIApiFp(this.configuration).updateExistingProjectProjectsProjectIdPut(projectId, projectUpdate, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
+    public updateProject(projectId: number, projectUpdate: ProjectUpdate, xEmployeeId?: string, options?: RawAxiosRequestConfig) {
+        return ProjectApiFp(this.configuration).updateProject(projectId, projectUpdate, xEmployeeId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

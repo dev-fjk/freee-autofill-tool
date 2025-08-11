@@ -19,13 +19,14 @@ from app.services.project_service import (
     update_project,
 )
 
-router = APIRouter(tags=["ProjectAPI"])
+router = APIRouter(tags=["Project"])
 
 @router.get(
     "/projects/{project_id}",
     response_model=ProjectDetailRead,
     summary="プロジェクト詳細取得",
     description="プロジェクトIDで詳細取得",
+    operation_id="getProjectDetail",
 )
 def get_project_detail(
     project_id: int = Path(..., description="プロジェクトID"),
@@ -38,6 +39,7 @@ def get_project_detail(
     response_model=PaginatedResponse[ProjectRead],
     summary="プロジェクト一覧取得",
     description="プロジェクトIDや名前で絞り込み・ページング対応",
+    operation_id="getProjects",
 )
 def get_projects(
     project_id: Optional[int] = Query(None),
@@ -54,6 +56,7 @@ def get_projects(
     status_code=status.HTTP_201_CREATED,
     summary="プロジェクト作成",
     description="新しいプロジェクトを登録する",
+    operation_id="createProject",
 )
 def create_new_project(
     project_in: ProjectCreate = Body(...),
@@ -67,6 +70,7 @@ def create_new_project(
     response_model=ProjectRead,
     summary="プロジェクト更新",
     description="指定IDのプロジェクトを更新する",
+    operation_id="updateProject",
 )
 def update_existing_project(
     project_id: int = Path(..., description="プロジェクトID"),
@@ -84,6 +88,7 @@ def update_existing_project(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="プロジェクト削除",
     description="指定IDのプロジェクトを削除します。update_keyが一致しない場合はエラーになります。",
+    operation_id="deleteProject",
 )
 def delete_project(
     project_id: int = Path(..., description="プロジェクトID"),
