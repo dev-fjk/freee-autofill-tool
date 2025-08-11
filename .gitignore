@@ -10,14 +10,11 @@ __pycache__/
 
 # ---- Node.js (React) ----
 # Node modules
-frontend/node_modules/
+*/node_modules/
 
 # React ビルド成果物
-frontend/build/
-frontend/dist/
-
-# 環境変数ファイル
-frontend/.env
+*/build
+*/dist/
 
 # npm logs
 npm-debug.log*
