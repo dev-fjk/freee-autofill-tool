@@ -3,6 +3,7 @@ from typing import Optional
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
 from sqlalchemy.orm import Session
 
+from app.api.deps import require_employee_id, require_role
 from app.db.deps import get_db
 from app.schemas import (
     PaginatedResponse,
@@ -19,7 +20,7 @@ from app.services.project_service import (
     update_project,
 )
 
-router = APIRouter(tags=["Project"])
+router = APIRouter(tags=["Project"],dependencies=[Depends(require_employee_id), Depends(require_role)],)
 
 @router.get(
     "/projects/{project_id}",

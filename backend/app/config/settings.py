@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     db_name: str
     db_user: str
     db_password: str
+    normal_user_password: str
+    admin_user_password: str    
 
 def get_settings() -> Settings:
     if os.getenv("RENDER") == "true":

@@ -40,7 +40,7 @@ const ProjectsPage = () => {
     return (
         <>
             <Header />
-            <Box maxW="1400px" mx="auto" px={6} py={6}>
+            <Box maxW={{ base: "100%", md: "1400px", xl: "1800px" }} mx="auto" px={{ base: 4, md: 6 }} py={6}>
                 <Flex mb={4} alignItems="center">
                     <Input
                         placeholder="プロジェクト名で検索"
